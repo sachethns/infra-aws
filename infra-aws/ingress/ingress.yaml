@@ -1,0 +1,78 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: llm-ingress
+  namespace: llm-namespace
+  labels:
+    name: llm-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - llm.eashanroy.me
+    secretName: tls-certificate
+  rules:
+  - host: llm.eashanroy.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: llm-frontend-service
+            port:
+              number: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: llm-namespace
+  labels:
+    name: api-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - api.eashanroy.me
+    secretName: tls-certificate
+  rules:
+  - host: api.eashanroy.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: llm-backend-service
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  labels:
+    name: grafana-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - grafana.eashanroy.me
+    secretName: tls-certificate
+  rules:
+  - host: grafana.eashanroy.me
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: grafana
+            port: 
+              number: 80

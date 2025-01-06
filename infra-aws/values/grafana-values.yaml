@@ -1,0 +1,80 @@
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus.monitoring.svc.cluster.local:80
+        isDefault: true
+
+
+# ingress:
+#   enabled: true
+#   ingressClassName: nginx
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#   path: /
+#   hosts:
+#     - grafana.hemanthnvd.com
+#   tls:
+#     - secretName: grafana-tls
+#       hosts:
+#         - grafana.hemanthnvd.com
+
+service:
+  type: ClusterIP
+  port: 80
+
+grafana.ini:
+  server:
+    root_url: https://grafana.eashanroy.me
+
+# Define where Grafana should look for dashboard files
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
+
+dashboards:
+  default:
+    namespaces:
+      gnetId: 15758
+      revision: 35
+      datasource: Prometheus
+    global:
+      gnetId: 15757
+      revision: 37
+      datasource: Prometheus
+    nodes:
+      gnetId: 15759
+      revision: 29
+      datasource: Prometheus
+    pods:
+      gnetId: 15760
+      revision: 28
+      datasource: Prometheus
+    api-server:
+      gnetId: 15761
+      revision: 17
+      datasource: Prometheus
+    core-dns:
+      gnetId: 15762
+      revision: 18
+      datasource: Prometheus
+    postgres-exporter:
+      gnetId: 12485
+      revision: 1
+      datasource: Prometheus
+    kafka-topics:
+      gnetId: 10122
+      revision: 1
+      datasource: Prometheus

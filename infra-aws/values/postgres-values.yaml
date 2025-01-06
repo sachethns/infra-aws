@@ -1,0 +1,25 @@
+global:
+  defaultStorageClass: ebs-storage-class
+
+fullnameOverride: postgres
+
+readReplicas:
+  replicaCount: 1
+  podAnnotations:
+    sidecar.istio.io/inject: "false"
+
+primary:
+  podAnnotations:
+    sidecar.istio.io/inject: "false"
+  podLabels:
+    app: postgres
+  persistence:
+    enabled: true
+    size: 5Gi
+    storageClass: ebs-storage-class
+
+metrics:
+  enabled: true
+
+volumePermissions:
+  enabled: true  

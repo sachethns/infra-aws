@@ -1,0 +1,55 @@
+listeners:
+  client:
+    protocol: PLAINTEXT
+  controller:
+    protocol: PLAINTEXT
+  interbroker:
+    protocol: PLAINTEXT
+  external:
+    protocol: PLAINTEXT
+
+## @section Controller-eligible statefulset parameters
+controller:
+  replicaCount: 0
+  podAntiAffinityPreset: hard
+  persistence:
+    storageClass: "gp2"
+    size: 10Gi
+
+## @section Broker-only statefulset parameters
+broker:
+  replicaCount: 3
+  podAntiAffinityPreset: hard
+  persistence:
+    storageClass: "gp2"
+    size: 10Gi
+
+## @section Other Parameters
+serviceAccount:
+  create: false
+
+## @section Kafka provisioning parameters
+provisioning:
+  enabled: true
+  numPartitions: 3
+  replicationFactor: 2
+  topics: 
+    - name: cve
+      partitions: 3
+      replicationFactor: 2
+      config:
+        max.message.bytes: 10485760
+        flush.messages: 1
+
+kraft:
+  enabled: false
+
+zookeeper:
+  enabled: true  
+  persistence:
+    storageClass: "gp2"
+    size: 10Gi
+
+metrics:
+  jmx:
+    enabled: true

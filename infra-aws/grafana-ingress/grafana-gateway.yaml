@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: grafana-gateway
+  namespace: monitoring
+spec:
+  selector:
+    # these selectors should match the labels set in the Gateway service (of type LB)
+    istio: gateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "grafana.eashanroy.me"
+    tls:
+      httpsRedirect: false
+  - port: 
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "grafana.eashanroy.me"
+    tls:
+      mode: SIMPLE
+      credentialName: tls-certificate # This must match the secretName in the Certificate resource
